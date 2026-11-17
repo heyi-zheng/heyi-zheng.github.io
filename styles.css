@@ -25,7 +25,14 @@ nav a { color: #555c65; text-decoration: none; font-size: .9375rem; }
 nav a:hover { color: var(--link); text-decoration: underline; }
 .page-layout { max-width: 1120px; margin: 0 auto; padding: 3.4rem 2rem 4rem; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 4.5rem; }
 .profile { align-self: start; position: sticky; top: 2rem; padding-top: .3rem; }
-.profile-photo { display: block; width: 184px; height: 184px; max-width: 100%; margin: 0 0 1.3rem; border-radius: 50%; object-fit: cover; object-position: 88% 50%; border: 1px solid var(--line); }
+.profile-photos { position: relative; width: 184px; height: 184px; max-width: 100%; margin: 0 0 1.3rem; border-radius: 50%; overflow: hidden; border: 1px solid var(--line); }
+.profile-photo { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 88% 50%; opacity: 0; transition: opacity .6s ease; }
+.profile-photo.is-active { opacity: 1; }
+.soccer-photo { inset: -16% auto auto -51%; width: 170%; height: 170%; object-position: center; }
+.photo-toggle { position: absolute; z-index: 1; bottom: 7px; left: 50%; transform: translateX(-50%); border: 0; border-radius: 12px; padding: 2px 9px; background: rgb(255 255 255 / 88%); color: var(--ink); font: inherit; font-size: .7rem; cursor: pointer; opacity: 0; }
+.profile-photos:hover .photo-toggle, .photo-toggle:focus-visible { opacity: 1; }
+@media (hover: none) { .photo-toggle { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .profile-photo { transition: none; } }
 .profile h1 { margin: 0; color: #252830; font-family: inherit; font-size: 1.75rem; font-weight: 600; letter-spacing: -.02em; line-height: 1.25; }
 .chinese-name { margin: .35rem 0 1.25rem; color: var(--muted); font-size: 1.0625rem; letter-spacing: .05em; }
 .profile-role { margin: 0 0 .4rem; font-size: .9375rem; font-weight: 600; }
@@ -61,7 +68,7 @@ footer { border-top: 1px solid var(--line); }
   nav a { font-size: .875rem; }
   .page-layout { display: block; padding: 2.1rem 1.35rem 2.6rem; }
   .profile { position: static; border-bottom: 1px solid var(--line); padding: 0 0 1.65rem; margin-bottom: 2rem; }
-  .profile-photo { width: 154px; height: 154px; margin-bottom: 1.1rem; }
+  .profile-photos { width: 154px; height: 154px; margin-bottom: 1.1rem; }
   .chinese-name { margin-bottom: .8rem; }
   .profile-affiliation { max-width: 25rem; }
   .location { margin-top: .8rem; margin-bottom: .45rem; }
@@ -75,7 +82,7 @@ footer { border-top: 1px solid var(--line); }
   .footer-inner { padding: 1.2rem 1.35rem; flex-wrap: wrap; }
 }
 @media print {
-  .masthead, .skip-link, footer { display: none; }
+  .masthead, .skip-link, footer, .photo-toggle { display: none; }
   .page-layout { display: block; padding: 0; }
   .profile { position: static; margin-bottom: 2rem; }
   .profile .location, .cv-link { display: none; }

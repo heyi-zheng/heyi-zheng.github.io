@@ -21,13 +21,18 @@
       <nav aria-label="Main navigation">
         <a href="#about">About</a>
         <a href="#publications">Publications</a>
+        <a href="#life">Life</a>
       </nav>
     </div>
   </header>
 
   <div class="page-layout">
     <aside class="profile" aria-label="Profile and contact information">
-      <img class="profile-photo" src="images/heyi-zheng.jpg" alt="Heyi Zheng outdoors" width="184" height="184" fetchpriority="high">
+      <div class="profile-photos" aria-label="Photos of Heyi Zheng">
+        <img class="profile-photo is-active" src="images/heyi-zheng.jpg" alt="Heyi Zheng outdoors" width="184" height="184" fetchpriority="high">
+        <img class="profile-photo soccer-photo" src="images/heyi-zheng-soccer.jpg" alt="Heyi Zheng playing soccer" width="184" height="184" aria-hidden="true">
+        <button class="photo-toggle" type="button" aria-label="Pause photo rotation" hidden>Pause</button>
+      </div>
       <h1>Heyi Zheng</h1>
       <p class="chinese-name" lang="zh-Hans">郑和易</p>
       <p class="profile-role">Undergraduate student</p>
@@ -67,12 +72,47 @@
           <li><span>CCF Certified Software Professional – Senior (CSP-S), First Prize</span><span class="date">2022, 2023</span></li>
         </ul>
       </section>
+      <section id="life" aria-labelledby="life-title">
+        <h2 id="life-title">Life</h2>
+        <p>Outside research, I enjoy playing soccer, tennis—pretty much any sport! I'm the captain of the PKU Math soccer team.</p>
+      </section>
     </main>
   </div>
 
   <footer>
     <div class="footer-inner"><span>© 2026 Heyi Zheng</span><span>Last updated: November 2026</span></div>
   </footer>
+  <script>
+    (() => {
+      const photos = Array.from(document.querySelectorAll('.profile-photo'));
+      const toggle = document.querySelector('.photo-toggle');
+      let current = 0;
+      let timer;
+      let paused = false;
+      const start = () => {
+        clearInterval(timer);
+        if (paused || document.hidden) return;
+        timer = setInterval(() => {
+          const next = (current + 1) % photos.length;
+          if (!photos[next].complete || !photos[next].naturalWidth) return;
+          photos[current].classList.remove('is-active');
+          photos[current].setAttribute('aria-hidden', 'true');
+          photos[next].classList.add('is-active');
+          photos[next].removeAttribute('aria-hidden');
+          current = next;
+        }, 5000);
+      };
+      toggle.hidden = false;
+      toggle.addEventListener('click', () => {
+        paused = !paused;
+        toggle.textContent = paused ? 'Play' : 'Pause';
+        toggle.setAttribute('aria-label', paused ? 'Resume photo rotation' : 'Pause photo rotation');
+        start();
+      });
+      document.addEventListener('visibilitychange', start);
+      start();
+    })();
+  </script>
   <script data-goatcounter="https://heyi-zheng.goatcounter.com/count"
           async src="https://gc.zgo.at/count.js"></script>
 </body>
